@@ -81,7 +81,7 @@ function AddInstitute() {
             </Form.Group>
 
             <Button variant="primary" type="submit">
-                Submit
+                Add
             </Button>
         </Form>
     );
