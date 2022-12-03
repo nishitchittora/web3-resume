@@ -15,6 +15,7 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
     constructor() ERC721("Professional Experience SBT", "EXPSBT") {}
 
     struct SBT {
+        string institute_name; // address of institute
         string exp_type; //can be enum
         string title;
         uint256 start_date;
@@ -24,21 +25,43 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
         string description;
     }
 
-    function SBT_to_string(SBT memory exp) private returns (string memory) {
-        string memory delimeter = ";";
+    function SBT_to_string(SBT memory exp)
+        private
+        pure
+        returns (string memory)
+    {
         return
             string(
                 abi.encodePacked(
+                    "institute_name",
+                    exp.institute_name,
+                    "exp_type:",
                     exp.exp_type,
+                    ", title:",
                     exp.title,
+                    ", start_date:",
                     exp.start_date,
+                    ", end_date:",
                     exp.end_date,
+                    ", has_expiry:",
                     exp.has_expiry,
+                    ", expiry_date:",
                     exp.expiry_date,
+                    ", description:",
                     exp.description
                 )
             );
     }
+
+    // already available in base class
+    // function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
+
+    //overriding trasfer functions of ERC721 to make the token soulbound
+    // function _transfer(
+    //     address from,
+    //     address to,
+    //     uint256 tokenId
+    // ) internal virtual override {}
 
     function mint(
         address receiver,
@@ -50,7 +73,10 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
         bool has_expiry,
         uint256 expiry_date
     ) public onlyInstitute returns (bool) {
+        address inst_address = msg.sender;
+        string memory inst_name = institutes[inst_address].name;
         SBT memory experience_sbt = SBT(
+            inst_name,
             exp_type,
             title,
             start_date,

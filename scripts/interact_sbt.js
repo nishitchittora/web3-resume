@@ -18,25 +18,26 @@ const sbtContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
  
 async function main() {
 
-  var count = await sbtContract.instituteCount();
-  console.log("Institute count is " + count);
+  var is_admin =  await sbtContract.is_admin(signer.address);
+  // var count = await sbtContract.instituteCount();
+  console.log("Am I the admin ?" + is_admin);
   
-  const tx = await sbtContract.addInstitute("Microsoft", "{type: corporation}",signer.address);
-  await tx.wait();
-  console.log("microsoft added as institute.")
+  // const tx = await sbtContract.addInstitute("Microsoft", "{type: corporation}",signer.address);
+  // await tx.wait();
+  // console.log("microsoft added as institute.")
 
   count = await sbtContract.instituteCount();
   console.log("Institute count is "+ count);
  
-    await sbtContract.mint(signer.address,
-      "bachlor degree",
-      "btech CSE",
-      "score: 7.8",
-      12,
-      13,
-      false,
-      14);
-    console.log("Minting SBT done");
+  //   await sbtContract.mint(signer.address,
+  //     "bachlor degree",
+  //     "btech CSE",
+  //     "score: 7.8",
+  //     12,
+  //     13,
+  //     false,
+  //     14);
+  //   console.log("Minting SBT done");
     
     // const tx = await instituteContract.addInstitute("Microsoft", "{type: corporation}",signer.address);
     // await tx.wait();
