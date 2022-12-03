@@ -36,21 +36,20 @@ function Metamask() {
                     ABIJson,
                     provider
                 );
-                // const name = await tokenContract.name();
-                // console.log(name, "%%%%");
 
-                // const is_admin_check = await tokenContract.is_admin(account);
+                const is_admin_check = await tokenContract.is_admin(account);
                 console.log(tokenContract);
                 const is_institute_check = await tokenContract.is_institute(
                     account
                 );
-                // const data = Promise.resolve(is_admin_check);
-                // data.then((value) => {
-                //     console.log(value);
-                //     setAdmin(value);
-                // });
+                const data = Promise.resolve(is_admin_check);
+                data.then((value) => {
+                    console.log(value, " ^^");
+                    setAdmin(value);
+                });
                 const data1 = Promise.resolve(is_institute_check);
                 data1.then((value) => {
+                    console.log(value, " **");
                     setInstitute(value);
                 });
             })();
@@ -89,7 +88,7 @@ function Metamask() {
                 </div>
                 <div style={{ marginTop: "2em" }}>
                     {admin && <AddInstitute />}
-                    {institute && <IssueSBT />}
+                    {!institute && <IssueSBT />}
                 </div>
             </div>
         );
