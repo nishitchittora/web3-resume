@@ -5,26 +5,30 @@ contract Institute {
     struct Institute {
         string name;
         string description;
+        bool active;
     }
-    uint256 institute_count;
     address private owner;
 
-    mapping(uint256 => Institute) private institutes;
+    mapping(address => Institute) private institutes;
 
     constructor() {
         owner = msg.sender;
     }
 
-    modifier() {
-    require(
-      owner == msg.sender,
-      'No sufficient right'
-    )
-  }
+    function addInstitute(
+        string memory name,
+        string memory description,
+        address institute_adress
+    ) external {
+        require(owner == msg.sender, "No sufficient right");
+        Institute memory _institute = Institute(name, description, true);
+        institutes[institute_adress] = _institute;
+    }
 
-    function addInstitute ownerOnly external(string name, string description) {
-        Institute memory _institute = Institute(name, description);
-        institutes[institute_count] = _institute;
-        institute_count++;
+    function is_valid_institute(address institute_adress)
+        public
+        returns (bool)
+    {
+        return institutes[institute_adress].active;
     }
 }
