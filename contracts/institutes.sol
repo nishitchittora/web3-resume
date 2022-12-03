@@ -8,11 +8,13 @@ contract Institute {
         bool active;
     }
     address private owner;
+    uint256 institutes_count;
 
     mapping(address => Institute) private institutes;
 
     constructor() {
         owner = msg.sender;
+        institutes_count = 0;
     }
 
     function addInstitute(
@@ -23,12 +25,18 @@ contract Institute {
         require(owner == msg.sender, "No sufficient right");
         Institute memory _institute = Institute(name, description, true);
         institutes[institute_adress] = _institute;
+        institutes_count++;
     }
 
-    function is_valid_institute(address institute_adress)
-        public
-        returns (bool)
-    {
-        return institutes[institute_adress].active;
+    function instituteCount() public view returns (uint256) {
+        return institutes_count;
+    }
+
+    modifier onlyInstitute() {
+        require(
+            institutes[msg.sender].active == true,
+            "Needs to be valid institute"
+        );
+        _;
     }
 }
