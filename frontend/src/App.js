@@ -1,35 +1,56 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddInstitute from "./components/addInstitute";
 import IssueSBT from "./components/issueSBT";
+import ABIJson from "./abi/Institute.json";
 
-class Metamask extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+function Metamask() {
+    const [account, setAccount] = useState();
+    const [institute, setInstitute] = useState();
+    const [admin, setAdmin] = useState();
+    const connectToMetamask = () => {
+        (async () => {
+            const provider = new ethers.providers.JsonRpcProvider(
+                process.env.REACT_APP_INFURA_URL
+            );
+            const accounts = await provider.send("eth_requestAccounts", []);
+            // const balance = await provider.getBalance(accounts[0]);
+            // const balanceInEther = ethers.utils.formatEther(balance);
+            // const block = await provider.getBlockNumber();
+            // provider.on("block", (block) => {
+            //     setAccount({ block });
+            // });
+            setAccount(accounts[0]);
+        })();
+    };
 
-    async connectToMetamask() {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accounts = await provider.send("eth_requestAccounts", []);
-        const balance = await provider.getBalance(accounts[0]);
-        const balanceInEther = ethers.utils.formatEther(balance);
-        const block = await provider.getBlockNumber();
+    useEffect(() => {
+        console.log("$$$$$");
+        (async () => {
+            const provider = new ethers.providers.JsonRpcProvider(
+                process.env.REACT_APP_INFURA_URL
+            );
+            const tokenContract = new ethers.Contract(
+                process.env.REACT_APP_TOKEN_ADDRESS,
+                ABIJson,
+                provider
+            );
+            const is_admin_check = await tokenContract.is_admin(account);
+            const is_institute_check = await tokenContract.is_admin(account);
+            const data = Promise.resolve(is_admin_check);
+            data.then((value) => {
+                console.log(value);
+            });
+            const data1 = Promise.resolve(is_institute_check);
+            data1.then((value) => {
+                console.log(value);
+            });
+        })();
+    }, [account]);
 
-        provider.on("block", (block) => {
-            this.setState({ block });
-        });
-
-        this.setState({
-            selectedAddress: accounts[0],
-            balance: balanceInEther,
-            block,
-        });
-    }
-
-    renderMetamask() {
+    const renderMetamask = () => {
         return (
             <div
                 style={{
@@ -50,12 +71,12 @@ class Metamask extends Component {
                     </div>
                     <div>
                         {" "}
-                        {!this.state.selectedAddress ? (
-                            <Button onClick={() => this.connectToMetamask()}>
+                        {!account ? (
+                            <Button onClick={() => connectToMetamask()}>
                                 Connect to Metamask
                             </Button>
                         ) : (
-                            this.state.selectedAddress
+                            account
                         )}
                     </div>
                 </div>
@@ -65,11 +86,9 @@ class Metamask extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
-    render() {
-        return <div>{this.renderMetamask()}</div>;
-    }
+    return <div>{renderMetamask()}</div>;
 }
 
 export default Metamask;
