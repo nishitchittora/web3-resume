@@ -12,43 +12,49 @@ function Metamask() {
     const [admin, setAdmin] = useState();
     const connectToMetamask = () => {
         (async () => {
-            const provider = new ethers.providers.JsonRpcProvider(
-                process.env.REACT_APP_INFURA_URL
-            );
+            // const provider = new ethers.providers.JsonRpcProvider(
+            //     process.env.REACT_APP_INFURA_URL
+            // );
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
             const accounts = await provider.send("eth_requestAccounts", []);
-            // const balance = await provider.getBalance(accounts[0]);
-            // const balanceInEther = ethers.utils.formatEther(balance);
-            // const block = await provider.getBlockNumber();
-            // provider.on("block", (block) => {
-            //     setAccount({ block });
-            // });
             setAccount(accounts[0]);
         })();
     };
 
     useEffect(() => {
-        console.log("$$$$$");
-        (async () => {
-            const provider = new ethers.providers.JsonRpcProvider(
-                process.env.REACT_APP_INFURA_URL
-            );
-            const tokenContract = new ethers.Contract(
-                process.env.REACT_APP_TOKEN_ADDRESS,
-                ABIJson,
-                provider
-            );
-            const is_admin_check = await tokenContract.is_admin(account);
-            const is_institute_check = await tokenContract.is_admin(account);
-            const data = Promise.resolve(is_admin_check);
-            data.then((value) => {
-                console.log(value);
-                setAdmin(value);
-            });
-            const data1 = Promise.resolve(is_institute_check);
-            data1.then((value) => {
-                setInstitute(value);
-            });
-        })();
+        console.log("$$$$$", account);
+        if (ABIJson && account) {
+            (async () => {
+                // const provider = new ethers.providers.JsonRpcProvider(
+                //     process.env.REACT_APP_INFURA_URL
+                // );
+                const provider = new ethers.providers.Web3Provider(
+                    window.ethereum
+                );
+                const tokenContract = new ethers.Contract(
+                    process.env.REACT_APP_CONTRACT_ADDRESS,
+                    ABIJson,
+                    provider
+                );
+                // const name = await tokenContract.name();
+                // console.log(name, "%%%%");
+
+                // const is_admin_check = await tokenContract.is_admin(account);
+                console.log(tokenContract);
+                const is_institute_check = await tokenContract.is_institute(
+                    account
+                );
+                // const data = Promise.resolve(is_admin_check);
+                // data.then((value) => {
+                //     console.log(value);
+                //     setAdmin(value);
+                // });
+                const data1 = Promise.resolve(is_institute_check);
+                data1.then((value) => {
+                    setInstitute(value);
+                });
+            })();
+        }
     }, [account]);
 
     const renderMetamask = () => {

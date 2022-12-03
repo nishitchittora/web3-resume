@@ -10,10 +10,10 @@ function AddInstitute() {
     });
     const onSubmit = () => {
         (async () => {
-            const provider = new ethers.providers.JsonRpcProvider(
-                process.env.REACT_APP_INFURA_URL
-            );
-
+            // const provider = new ethers.providers.JsonRpcProvider(
+            //     process.env.REACT_APP_INFURA_URL
+            // );
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
             const address = await provider.resolveName("nishitchittora.eth");
 
             const balance = await provider.getBalance("nishitchittora.eth");
