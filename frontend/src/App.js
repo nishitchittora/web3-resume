@@ -42,10 +42,11 @@ function Metamask() {
             const data = Promise.resolve(is_admin_check);
             data.then((value) => {
                 console.log(value);
+                setAdmin(value);
             });
             const data1 = Promise.resolve(is_institute_check);
             data1.then((value) => {
-                console.log(value);
+                setInstitute(value);
             });
         })();
     }, [account]);
@@ -81,8 +82,8 @@ function Metamask() {
                     </div>
                 </div>
                 <div style={{ marginTop: "2em" }}>
-                    <AddInstitute />
-                    <IssueSBT />
+                    {admin && <AddInstitute />}
+                    {institute && <IssueSBT />}
                 </div>
             </div>
         );
