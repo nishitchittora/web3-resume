@@ -31,4 +31,8 @@ contract Institute {
     {
         return institutes[institute_adress].active;
     }
+
+    function is_admin(address _admin) public returns (bool) {
+        return _admin == owner;
+    }
 }
