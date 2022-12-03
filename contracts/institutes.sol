@@ -14,7 +14,7 @@ contract Institute {
 
     constructor() {
         owner = msg.sender;
-        institutes_count = 0;
+        // institutes_count = 0;
     }
 
     function addInstitute(
@@ -38,5 +38,14 @@ contract Institute {
             "Needs to be valid institute"
         );
         _;
+    }
+
+    function is_admin(address _admin) public returns (bool) {
+        return _admin == owner;
+    }
+
+    function is_institute(address _institute) public returns (bool) {
+        if (institutes[_institute].active) return true;
+        return false;
     }
 }
