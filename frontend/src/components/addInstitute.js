@@ -1,41 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 const ethers = require("ethers");
+import ABIJson from "./abi/Institute.json";
 
 function AddInstitute() {
     useEffect(() => {
         console.log(process.env, "%%%");
-        onSubmit();
+        // onSubmit();
     });
-    const onSubmit = () => {
+    const [value, setValue] = useState();
+    const onInput = ({ t: { v } }) =>
+        setValue({
+            ...value,
+            t: v,
+        });
+    const onSubmit = (e) => {
+        console.log(e, e.target.values);
+        e.preventDefault();
+
         (async () => {
             // const provider = new ethers.providers.JsonRpcProvider(
             //     process.env.REACT_APP_INFURA_URL
             // );
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const address = await provider.resolveName("nishitchittora.eth");
-
-            const balance = await provider.getBalance("nishitchittora.eth");
-
-            console.log(
-                `Balance of ${address} is:`,
-                ethers.utils.formatEther(balance)
+            const signer = provider.getSigner();
+            const SBT = new ethers.Contract(
+                process.env.REACT_APP_CONTRACT_ADDRESS,
+                ABIJson,
+                signer
             );
+
+            const addInstitute = await SBT.addInstitute(
+                name,
+                description,
+                address
+            );
+            addInstitute.then((data) => console.log(data));
         })();
     };
-
+    console.log(value);
     return (
-        <Form>
+        <Form onSubmit={onSubmit}>
             <Form.Group className="mb-3" controlId="Name">
                 <Form.Label>Institute Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Institute Name" />
+                <Form.Control
+                    onChange={onInput}
+                    value={value}
+                    type="text"
+                    placeholder="Enter Institute Name"
+                />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="Description">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                     type="text"
+                    onChange={onInput}
+                    value={value}
                     placeholder="Enter Institute Description"
                 />
             </Form.Group>
@@ -43,6 +66,8 @@ function AddInstitute() {
                 <Form.Label>ENS Address</Form.Label>
                 <Form.Control
                     type="text"
+                    onChange={onInput}
+                    value={value}
                     placeholder="Enter Institute ENS Address"
                 />
             </Form.Group>
