@@ -1,9 +1,9 @@
 const { ethers } = require("hardhat");
 async function main() {
 
-   const Institute = await ethers.getContractFactory('Institute');
+   const pv = await ethers.getContractFactory('ProfessionalValidation');
 
-   const hw = await Institute.deploy();
+   const hw = await pv.deploy();
 
    console.log('Institute Contract Deployed to:', hw.address);
 }
