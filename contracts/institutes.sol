@@ -10,7 +10,7 @@ contract Institute {
     address private owner;
     uint256 institutes_count;
 
-    mapping(address => Institute) private institutes;
+    mapping(address => Institute) internal institutes;
 
     constructor() {
         owner = msg.sender;
@@ -40,11 +40,12 @@ contract Institute {
         _;
     }
 
-    function is_admin(address _admin) public returns (bool) {
-        return _admin == owner;
+    function is_admin(address _admin) public view returns (bool) {
+        if (_admin == owner) return true;
+        return false;
     }
 
-    function is_institute(address _institute) public returns (bool) {
+    function is_institute(address _institute) public view returns (bool) {
         if (institutes[_institute].active) return true;
         return false;
     }
