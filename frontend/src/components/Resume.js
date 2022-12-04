@@ -16,7 +16,62 @@ function Resume({ account }) {
         let resume = await fetch(
             "https://mocki.io/v1/4d509fb6-fa79-42ae-b773-e4ce3741302d"
         );
-        setResumeData(resume);
+        setResumeData({
+            name: "Nishit Chittora",
+            Bio: "",
+            study: [
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+            ],
+            experience: [
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+                {
+                    institute_name: "Google",
+                    experience_type: "professional experience",
+                    title: "Senior Software Engineer",
+                    start_date: "2022-05-06",
+                    end_date: "2020-02-01",
+                    description: "",
+                },
+            ],
+        });
     }, [mainAccount]);
 
     return <h2></h2>;
