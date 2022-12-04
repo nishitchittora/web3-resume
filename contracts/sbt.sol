@@ -16,12 +16,10 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
 
     struct SBT {
         string institute_name; // address of institute
-        string exp_type; //can be enum
+        string experience_type; //can be enum
         string title;
-        uint256 start_date;
-        uint256 end_date;
-        bool has_expiry;
-        uint256 expiry_date;
+        string start_date;
+        string end_date;
         string description;
     }
 
@@ -33,22 +31,19 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
         return
             string(
                 abi.encodePacked(
-                    "institute_name",
+                    "{institute_name:",
                     exp.institute_name,
-                    "exp_type:",
-                    exp.exp_type,
+                    "experience_type:",
+                    exp.experience_type,
                     ", title:",
                     exp.title,
                     ", start_date:",
                     exp.start_date,
                     ", end_date:",
                     exp.end_date,
-                    ", has_expiry:",
-                    exp.has_expiry,
-                    ", expiry_date:",
-                    exp.expiry_date,
                     ", description:",
-                    exp.description
+                    exp.description,
+                    "}"
                 )
             );
     }
@@ -57,21 +52,65 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
     // function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
 
     //overriding trasfer functions of ERC721 to make the token soulbound
-    // function _transfer(
-    //     address from,
-    //     address to,
-    //     uint256 tokenId
-    // ) internal virtual override {}
+    // this function is disabled since we don;t want to allow transfers
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId,
+        bytes memory _data
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function approve(address _to, uint256 _tokenId) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function setApprovalForAll(address _operator, bool _approved)
+        public
+        virtual
+        override
+    {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function getApproved(uint256 _tokenId)
+        public
+        view
+        override
+        returns (address)
+    {
+        return address(0x0);
+    }
 
     function mint(
         address receiver,
         string memory exp_type,
         string memory title,
         string memory description,
-        uint256 start_date,
-        uint256 end_date,
-        bool has_expiry,
-        uint256 expiry_date
+        string memory start_date,
+        string memory end_date
     ) public onlyInstitute returns (bool) {
         address inst_address = msg.sender;
         string memory inst_name = institutes[inst_address].name;
@@ -81,8 +120,6 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
             title,
             start_date,
             end_date,
-            has_expiry,
-            expiry_date,
             description
         );
         _tokenIds.increment();

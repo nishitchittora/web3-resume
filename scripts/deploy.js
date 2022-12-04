@@ -5,7 +5,7 @@ async function main() {
 
    const hw = await pv.deploy();
 
-   console.log('Institute Contract Deployed to:', hw.address);
+   console.log('SBT Contract Deployed to:', hw.address);
 }
 
 main().then(() => process.exit(0))
