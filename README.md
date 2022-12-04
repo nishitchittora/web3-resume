@@ -1,4 +1,4 @@
-# web3-resume
+# Web3 Resume
 Soul Bound Token(SBT) based Professional Credentials Validated Resume
 
 # Problems:
