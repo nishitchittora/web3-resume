@@ -98,7 +98,15 @@ function Metamask() {
                     </div>
                 </div>
                 <div style={{ marginTop: "2em" }}>
-                    {admin ? <AddInstitute /> : <IssueSBT />}
+                    {admin ? (
+                        <AddInstitute />
+                    ) : institute ? (
+                        <IssueSBT />
+                    ) : account ? (
+                        <Resume account={account} />
+                    ) : (
+                        <AddWallet />
+                    )}
                 </div>
             </div>
         );
