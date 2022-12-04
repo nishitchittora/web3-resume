@@ -6,6 +6,7 @@ import AddInstitute from "./components/addInstitute";
 import IssueSBT from "./components/issueSBT";
 import ABIJson from "./abi/Institute.json";
 import AddWallet from "./components/addWallet";
+import Resume from "./components/Resume";
 
 function Metamask() {
     const [account, setAccount] = useState();
@@ -97,9 +98,15 @@ function Metamask() {
                     </div>
                 </div>
                 <div style={{ marginTop: "2em" }}>
-                    {admin && <AddInstitute />}
-                    {institute && <IssueSBT />}
-                    {!account && <AddWallet />}
+                    {admin ? (
+                        <AddInstitute />
+                    ) : institute ? (
+                        <IssueSBT />
+                    ) : account ? (
+                        <Resume account={account} />
+                    ) : (
+                        <AddWallet />
+                    )}
                 </div>
             </div>
         );
