@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AddInstitute from "./components/addInstitute";
 import IssueSBT from "./components/issueSBT";
 import ABIJson from "./abi/Institute.json";
+import AddWallet from "./components/addWallet";
 
 function Metamask() {
     const [account, setAccount] = useState();
@@ -73,7 +74,16 @@ function Metamask() {
                     }}
                 >
                     <div>
-                        <a href="/">Home</a>
+                        <a href="/">
+                            <img
+                                style={{
+                                    height: "60px",
+                                    width: "60px",
+                                }}
+                                alt={"logo"}
+                                src={"./logo.png"}
+                            />
+                        </a>
                     </div>
                     <div>
                         {" "}
@@ -88,7 +98,8 @@ function Metamask() {
                 </div>
                 <div style={{ marginTop: "2em" }}>
                     {admin && <AddInstitute />}
-                    {!institute && <IssueSBT />}
+                    {institute && <IssueSBT />}
+                    {!account && <AddWallet />}
                 </div>
             </div>
         );
