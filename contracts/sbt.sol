@@ -15,29 +15,93 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
     constructor() ERC721("Professional Experience SBT", "EXPSBT") {}
 
     struct SBT {
-        string exp_type; //can be enum
+        string institute_name; // address of institute
+        string experience_type; //can be enum
         string title;
-        uint256 start_date;
-        uint256 end_date;
-        bool has_expiry;
-        uint256 expiry_date;
+        string start_date;
+        string end_date;
         string description;
     }
 
-    function SBT_to_string(SBT memory exp) private returns (string memory) {
-        string memory delimeter = ";";
+    function SBT_to_string(SBT memory exp)
+        private
+        pure
+        returns (string memory)
+    {
         return
             string(
                 abi.encodePacked(
-                    exp.exp_type,
+                    "{institute_name:",
+                    exp.institute_name,
+                    "experience_type:",
+                    exp.experience_type,
+                    ", title:",
                     exp.title,
+                    ", start_date:",
                     exp.start_date,
+                    ", end_date:",
                     exp.end_date,
-                    exp.has_expiry,
-                    exp.expiry_date,
-                    exp.description
+                    ", description:",
+                    exp.description,
+                    "}"
                 )
             );
+    }
+
+    // already available in base class
+    // function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
+
+    //overriding trasfer functions of ERC721 to make the token soulbound
+    // this function is disabled since we don;t want to allow transfers
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId,
+        bytes memory _data
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function approve(address _to, uint256 _tokenId) public virtual override {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function setApprovalForAll(address _operator, bool _approved)
+        public
+        virtual
+        override
+    {
+        revert("Transfer not supported for soul bound token.");
+    }
+
+    // this function is disabled since we don;t want to allow transfers
+    function getApproved(uint256 _tokenId)
+        public
+        view
+        override
+        returns (address)
+    {
+        return address(0x0);
     }
 
     function mint(
@@ -45,18 +109,17 @@ contract ProfessionalValidation is ERC721URIStorage, Institute {
         string memory exp_type,
         string memory title,
         string memory description,
-        uint256 start_date,
-        uint256 end_date,
-        bool has_expiry,
-        uint256 expiry_date
+        string memory start_date,
+        string memory end_date
     ) public onlyInstitute returns (bool) {
+        address inst_address = msg.sender;
+        string memory inst_name = institutes[inst_address].name;
         SBT memory experience_sbt = SBT(
+            inst_name,
             exp_type,
             title,
             start_date,
             end_date,
-            has_expiry,
-            expiry_date,
             description
         );
         _tokenIds.increment();
