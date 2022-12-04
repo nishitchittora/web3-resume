@@ -10,12 +10,9 @@ function Resume({ account }) {
         } else if (account) {
             setAccount(account);
         }
-    });
+    }, []);
 
     useEffect(async () => {
-        let resume = await fetch(
-            "https://mocki.io/v1/4d509fb6-fa79-42ae-b773-e4ce3741302d"
-        );
         setResumeData({
             name: "Nishit Chittora",
             Bio: "",
